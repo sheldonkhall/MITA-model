@@ -1,0 +1,20 @@
+// Gmsh project created on Thu Apr 24 11:29:28 2014
+Mesh.RandomFactor=1.e-8;
+length = 0.005;
+//width = 0.000001;
+width = 0.0001;
+//ms = 0.000001;
+ms = 0.00001;
+Point(1) = {0, -width/2, 0, ms};
+Point(2) = {length, -width/2, 0, ms};
+Point(3) = {length, width/2, 0, ms};
+Point(4) = {0, width/2, 0, ms};
+Line(1) = {1, 2};
+Line(2) = {2, 3};
+Line(3) = {3, 4};
+Line(4) = {4, 1};
+Line Loop(5) = {3, 4, 1, 2};
+Plane Surface(6) = {5};
+Physical Line(6) = {4}; // heat sink bc
+Physical Line(5) = {2}; // dirichlet condition
+Physical Surface(9) = {6};

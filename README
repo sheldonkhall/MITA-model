@@ -1,0 +1,7 @@
+MITA models
+
+This repository contains the code for running models of minimally
+invasive tumour ablation.
+
+Before doing anything the script install.sh should be executed.
+This simply prepares the test cases.

@@ -1,0 +1,6 @@
+go-smart-mwa TODO list:
+
+1) ai-2012.py test case requires a more general mechanism to specify material properties by region.
+2) improve steady state implementation
+3) source term framework messy, clean up
+4) may need to resurrect coaxial.py
