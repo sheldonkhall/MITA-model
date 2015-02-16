@@ -22,6 +22,7 @@ import time as tm
 start_time = tm.strftime('%H:%M:%S')
 
 problemname = "gas-probe-sensitivity"
+set_log_level(ERROR) # remove warnings for tests
 
 EM_parameters.freq = 2.45e9 # Probe frequency
 EM_parameters.om = 2 * pi * EM_parameters.freq # Probe angular frequency
@@ -99,17 +100,15 @@ thermal_parameters.qmet = Constant(0.)
 thermal_parameters.T_initial = Constant(310.)
 
 # solver options
-dt_min = 1. # absolute step size minimum
+dt_min = 0.0001 # absolute step size minimum
 #dt_min = 4.
-dt_max = 1. # absolute step size maximum
-t_out = np.linspace(1,100,100) # numpy vector of times at which to save to disk
-dt = 1. # time step (s)
-tmax = 100. # maximum time (s)
+dt_max = 5. # absolute step size maximum
+t_out = np.linspace(10,300,30) # numpy vector of times at which to save to disk
+dt = 0.0001 # time step (s)
+tmax = 300 # maximum time (s)
 thermal_parameters.em_method = 'iterate'
 thermal_parameters.k_method = 'constant'
 thermal_parameters.perf_model = 'stop' # cell state dependent perfusion
-thermal_parameters.stop_on_me = False # (not recommended) switch off check that phase change temp range not exceeded
-thermal_parameters.cda_update = False
 
 T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_min, dt_max, t_out, thermal_parameters, EM_parameters)
 

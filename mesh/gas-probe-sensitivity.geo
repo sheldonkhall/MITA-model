@@ -1,4 +1,4 @@
-as = 0.00006; // antenna mesh size (should be 0.00003)
+as = 0.00003; // antenna mesh size
 r1 = 0.000135; // inner conductor
 r2 = 0.000470; // inside outer conductor
 r3 = 0.000595; // outside outer conductor

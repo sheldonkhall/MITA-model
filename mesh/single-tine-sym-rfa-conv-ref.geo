@@ -1,7 +1,7 @@
 // Gmsh project created on Wed Aug  6 16:50:26 2014
 am = 0.0006; // antenna mesh
-cm = 0.01; // coarse tissue mesh
-rd = 0.09; // radius of tissue domain
+cm = 0.0125; // coarse tissue mesh
+rd = 0.1; // radius of tissue domain
 Point(1) = {0.0015, 0, 0, am};
 Point(2) = {0.0015, Sqrt(rd^2-0.0015^2)-0.015, 0, cm};
 Point(3) = {0, -0.03, 0, am};

@@ -304,7 +304,7 @@
   framework in the Pennes equation solver must be utilised. This is
   illustrated in Fig. <reference|fig:code-schem>.
 
-  <big-figure|<image|code-schem.png|527px|373px||>|<label|fig:code-schem>Schematic
+  <big-figure|<image|code-schem.eps|527px|373px||>|<label|fig:code-schem>Schematic
   of the code highlighting the importance of the Pennes equation solver. The
   information being passed between the components is given explicitly:
   <math|T> is the temperature, <math|V> is the cell viability and SAR the
@@ -1165,6 +1165,25 @@
   <no-indent>Expected Results: Currently expect code to converge to a
   solution with physically reasonable temeprature and cell death predictions.
 
+  <subsection|Single Tine RFA convergence tests>
+
+  File: single-tine-sym-rfa-conv.py
+
+  \;
+
+  <no-indent>Status: working
+
+  \;
+
+  <no-indent>Description: this test runs through a variety of meshes of
+  increasing resolution to determine the mesh sensitivity. The total mesh
+  volume is also increased to see if there is a dependence on this.
+
+  \;
+
+  <no-indent>Expected Results: array of convergence of max and min field
+  quantities.
+
   <subsection|Annular Slot Antenna>
 
   File: gas-probe-sensitivity.py
@@ -1323,7 +1342,7 @@
   <\pseudo-code>
     git checkout develop
 
-    git merge - -no-f -s ours release
+    git merge --no-f -s ours release
   </pseudo-code>
 
   <no-indent>This should stop files removed for the release being removed
@@ -1345,6 +1364,17 @@
   <\pseudo-code>
     git log --diff-filter=D --summary
   </pseudo-code>
+
+  In order to keep the online repository clean: a new branch was created.
+  This is called trunk and will contain the released publically available
+  code. This is stripped of the history during creating by using the command:
+
+  <\pseudo-code>
+    git checkout --orphan trunk
+  </pseudo-code>
+
+  <no-indent>then trunk is merged with release. This branch can then be
+  pushed to github and lacks the unneeded develop history.
 
   <\bibliography|bib|tm-plain|fenics-mwa>
     <\bib-list|7>
@@ -1443,14 +1473,14 @@
     <associate|auto-44|<tuple|4.11|15>>
     <associate|auto-45|<tuple|4.12|15>>
     <associate|auto-46|<tuple|4.13|15>>
-    <associate|auto-47|<tuple|5|15>>
-    <associate|auto-48|<tuple|5.1|15>>
-    <associate|auto-49|<tuple|5.2|15>>
+    <associate|auto-47|<tuple|4.14|15>>
+    <associate|auto-48|<tuple|5|15>>
+    <associate|auto-49|<tuple|5.1|15>>
     <associate|auto-5|<tuple|3|4>>
-    <associate|auto-50|<tuple|5.3|16>>
-    <associate|auto-51|<tuple|5.4|16>>
+    <associate|auto-50|<tuple|5.2|16>>
+    <associate|auto-51|<tuple|5.3|16>>
     <associate|auto-52|<tuple|5.4|16>>
-    <associate|auto-53|<tuple|6|17>>
+    <associate|auto-53|<tuple|5.4|17>>
     <associate|auto-6|<tuple|3.1|4>>
     <associate|auto-7|<tuple|1|5>>
     <associate|auto-8|<tuple|3.1.1|5>>

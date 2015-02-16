@@ -20,6 +20,7 @@ from axisymm_mwa import *
 import numpy as np
 
 problemname = "vyas-1992"
+set_log_level(ERROR) # remove warnings for tests
 
 thermal_parameters.restrict_th_mesh = 1  # region to compute thermal solution in
 

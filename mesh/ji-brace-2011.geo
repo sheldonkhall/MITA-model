@@ -1,5 +1,5 @@
 // Gmsh project created on Wed May 28 15:01:15 2014
-am = 0.00006;
+am = 0.00003;
 lm = 0.005;
 wp = 0.01;
 ds = 0.05;

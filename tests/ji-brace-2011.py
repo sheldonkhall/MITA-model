@@ -24,6 +24,7 @@ import numpy as np
 
 # define problem name
 problemname = "ji-brace-2011"
+set_log_level(ERROR) # remove warnings for tests
 
 EM_parameters.freq = 2.45e9 # Probe frequency
 EM_parameters.om = 2 * pi * EM_parameters.freq # Probe angular frequency
@@ -106,15 +107,13 @@ EM_parameters.ss4=0.
 # EM_parameters.ss4=0.
 
 # solver options
-#dt_min = 0.0001 # absolute step size minimum
-dt_min = 1.
+dt_min = 0.0001 # absolute step size minimum
+#dt_min = 1.
 dt_max = 5. # absolute step size maximum
-t_out = np.linspace(1,100,20) # numpy vector of times at which to save to disk
+t_out = np.linspace(5,300,60) # numpy vector of times at which to save to disk
 dt = 1. # time step (s)
-tmax = 100 # maximum time (s)
-thermal_parameters.em_method = 'iterate'
+tmax = 300 # maximum time (s)
+thermal_parameters.em_method = 'constant'
 thermal_parameters.k_model = 'constant'
-thermal_parameters.stop_on_me = False # (not recommended) switch off check that phase change temp range not exceeded
-thermal_parameters.cda_update = False
 
 T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_min, dt_max, t_out, thermal_parameters, EM_parameters)

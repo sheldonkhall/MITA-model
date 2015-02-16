@@ -97,6 +97,7 @@ class EM_parameters:
     cond_vap = 0.5 # conductivity after vapourisation
     imp_max = 120 # impedance threshold for control system
     imp_t_off = 15 # time to switch off probe after imp_max exceeded
+    mms_source = Constant(0.) # source term for use in mms
 
     # MWA parameters
     freq = 2.45e9 # Probe frequency
@@ -121,6 +122,12 @@ class EM_parameters:
     ss2=5.951
     ss3=0.0697
     ss4=0.
+
+    # boundaries
+    zero_V = []
+    insulating = []
+    symmetry = []
+    active_tip = []
     
 #    def __init__(self,Pin):
 #        self.Pin=Pin
@@ -152,6 +159,10 @@ class thermal_parameters:
     stop_on_me = True # error given when T change over dt too large
     Q = Constant(0.) # allow custom heat source to be given
     cda_update = True # compute cell death
+    p_stop = 0.8 # value of viability at which to stop perfusion
+
+    # boundaries
+    bulk_tissue = []
 
 class cell_death_parameters:
     kb = 7.77e-3
@@ -216,13 +227,14 @@ def compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T, thp):
     # substitue values in tissue
     # take restrict_th_mesh and set T dependent properties in that region
     T_p = Function(V0_dc)
-    T_p = interpolate(T,V0_dc)
+#    T_p = interpolate(T,V0_dc)
+    T_p = project_axisym(T,V0_dc)
     T_array = T_p.vector().array()
     eps_r_array = eps_r.vector().array()
-    eps_r_array[interior.array()==thp.restrict_th_mesh] = emp.es1*(1-1/(1+N.exp(emp.es2-emp.es3*(T_array[interior.array()==thp.restrict_th_mesh]-273.))))+emp.es4
+    eps_r_array[interior.array()==thp.restrict_th_mesh] = emp.es1*(1-1/(1+N.exp(emp.es2-emp.es3*(T_array[interior.array()==thp.restrict_th_mesh]-273.+310))))+emp.es4
     eps_r.vector()[:] = eps_r_array
     sigma_array = sigma.vector().array()
-    sigma_array[interior.array()==thp.restrict_th_mesh] = emp.ss1*(1-1/(1+N.exp(emp.ss2-emp.ss3*(T_array[interior.array()==thp.restrict_th_mesh]-273.))))+emp.ss4
+    sigma_array[interior.array()==thp.restrict_th_mesh] = emp.ss1*(1-1/(1+N.exp(emp.ss2-emp.ss3*(T_array[interior.array()==thp.restrict_th_mesh]-273.+310))))+emp.ss4
     sigma.vector()[:] = sigma_array
     #eps_r = es1*(1-1/(1+exp(es2-es3*(T-273.))))+es4
     #sigma = ss1*(1-1/(1+exp(ss2-ss3*(T-273.))))+ss4
@@ -363,7 +375,9 @@ def compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T, thp):
                 "preconditioner": "hypre_euclid"})
 
     # compute SAR
-    Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_Re)
+#    Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_Re)
+    Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_dc)
+    print "!!!!!!!!!!!!!!!!!!! project onto discontinuous removes neg values investigate !!!!!!!!!!!!"
 
 
     # compute power according to RFA
@@ -406,13 +420,20 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
 
     #checks
     ensure_dir(problemname) # check directory exists for results
-    eps = N.finfo(float).eps # useful quantity
+    #eps = N.finfo(float).eps # useful quantity
+    eps = 1e-10 # eps above for some reason not good enough and had to make larger
     if t_out.size == 1 and t_out[0] > dt_max-eps: # catch output error
         print 'single time point out'
     elif N.any(N.diff(t_out)<dt_max-eps):
         error("largest time step spans more than one output reduce dt_max or coarsen t_out")
 
     print "--+--+-- start time-dependent bioheat solve --+--+--"        
+
+    # NOTE:
+    # 
+    # EQUATIONS HAVE BEEN SCALED IN TERMS OF THETA = T - T0
+    thp.Tu = thp.Tu - 310
+    thp.Tl = thp.Tl - 310
 
     # set solver params in advance
     solver = KrylovSolver("cg", "hypre_euclid")
@@ -442,8 +463,8 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     cur_time = Expression('t',t=0.)
 
     # initial uniform temperature
-    T_prev = interpolate(thp.T_initial,W)
-#    T_prev = project_axisym(thp.T_initial,W)
+#    T_prev = interpolate(thp.T_initial,W)
+    T_prev = project_axisym(thp.T_initial-310,W)
 
     # initial values (if needed)
     resistance = 0.
@@ -459,35 +480,53 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     elif thp.em_method=='vyas':
         Q = Expression('2*60*70/pi/pow(0.0045,2)*exp(-2*pow(x[0],2)/pow(0.0045,2)-60*x[1])')
     elif thp.em_method=='RFA-const' or thp.em_method=='iterateRFA':
-        Q, resistance, power = RFA_SAR(problemname, mesh, interior, boundaries, emp, T_prev, thp)
+        Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T_prev, thp)
+        File("%s/voltage.pvd" % problemname) << Vfield
     elif thp.em_method=='custom':
         Q = thp.Q
     elif thp.em_method=='mms-nonlinear':
-        M = 310.
+        M = 23.
         P = 1.
         L = 1.
         H = 0.512
         R = 0.02*0.512
         F = 1.
+#        Q = (M*(M*pow(P,2)*r*R*pow(cos(P*r),2) - 2*pow(L,2)*M*r*R*pow(cos(P*r),2)*cos(2*L*z) - M*pow(P,2)*r*R*pow(cos(P*r),2)*cos(2*L*z) + 2*exp(F*cur_time)*H*pow(L,2)*r*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*pow(P,2)*r*cos(P*r)*sin(L*z) - 2*exp(F*cur_time)*F*r*thp.rho_c_t*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*P*sin(P*r)*sin(L*z) - 2*M*pow(P,2)*r*R*pow(sin(P*r),2)*pow(sin(L*z),2) + M*P*R*sin(2*P*r)*pow(sin(L*z),2)))/(2.*exp(2*F*cur_time)*r)
         Q = (M*(M*P*R*(2*P*r*cos(2*P*r) + sin(2*P*r)) - M*R*cos(2*L*z)*(2*pow(L,2)*r + 2*(pow(L,2) + pow(P,2))*r*cos(2*P*r) + P*sin(2*P*r)) + 4*exp(F*cur_time)*(r*(H*(pow(L,2) + pow(P,2)) - F*thp.rho_c_t)*cos(P*r) + H*P*sin(P*r))*sin(L*z)))/(4.*exp(2*F*cur_time)*r)
-#        Q = Expression("(M*(M*P*R*(2*P*x[0]*cos(2*P*x[0]) + sin(2*P*x[0])) - M*R*cos(2*L*x[1])*(2*pow(L,2)*x[0] + 2*(pow(L,2) + pow(P,2))*x[0]*cos(2*P*x[0]) + P*sin(2*P*x[0])) + 4*exp(F*t)*(x[0]*(H*(pow(L,2) + pow(P,2)) - F*rho)*cos(P*x[0]) + H*P*sin(P*x[0]))*sin(L*x[1])))/(4.*exp(2*F*t)*x[0])",M = 310., P = 1., L = 1., H = 0.512, R = 0.02*0.512, F = 1., rho=thp.rho_c_t, t=dt)
-        Q = (M*(M*pow(P,2)*r*R*pow(cos(P*r),2) - 2*pow(L,2)*M*r*R*pow(cos(P*r),2)*cos(2*L*z) - M*pow(P,2)*r*R*pow(cos(P*r),2)*cos(2*L*z) + 2*exp(F*cur_time)*H*pow(L,2)*r*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*pow(P,2)*r*cos(P*r)*sin(L*z) - 2*exp(F*cur_time)*F*r*thp.rho_c_t*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*P*sin(P*r)*sin(L*z) - 2*M*pow(P,2)*r*R*pow(sin(P*r),2)*pow(sin(L*z),2) + M*P*R*sin(2*P*r)*pow(sin(L*z),2)))/(2.*exp(2*F*cur_time)*r)
+    # elif thp.em_method=='mms-nonlinear-full':
+    #     M = 310.
+    #     P = 1.
+    #     L = 1.
+    #     H = 0.512
+    #     R = 0.02*0.512
+    #     F = 1.
+    #     W1 = .15
+    #     Y = .02*.15
+    #     G = 1.
+    #     A1 = 1.
+    #     B = 1.
+    #     emp.mms_source = Constant(0.)
+    #     Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T_prev, thp)
     
     # interpolate heat source onto restriction
 #    qext = interpolate(Q,W)
     qext = project_axisym(Q,W)
 
+    # plot(qext)
+    # interactive()
+
     if thp.em_method=='vyas':
         qext = conditional(And(gt(z,0),lt(cur_time,0.3)),Q,0.)
     elif thp.em_method=='mms-nonlinear':
         qext = Q
+    # elif thp.em_method=='mms-nonlinear-full':
+    #     qext = Q
 
-    # define boundary condition
-    # for the dirichlet condition set a physical line in gmsh to 5
-    bc0 = DirichletBC(W, thp.T0, boundaries, 5)
+    # apply boundary conditions according to mesh function
+    bcs = []
+    for index in thp.bulk_tissue:
+        bcs.append(DirichletBC(W, 0., boundaries, index))
     # for a neumann condition to create a heat sink at r=0 set gmsh to 6
-
-    bcs = [bc0]
 
     # define variational problem
     T = TrialFunction(W)
@@ -504,12 +543,11 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     # define thermal conductivity
     k=thp.k
     if thp.k_model=='linear':
-        k=thp.k + thp.dk*(T_prev-thp.T0)
+        k=thp.k + thp.dk*(T_prev)
     elif thp.k_model=='linear_limited':
-        k=conditional(le(T_prev,373),thp.k + thp.dk*(T_prev-thp.T0),thp.k + thp.dk*(373-thp.T0))
-        print 'linear limited needs to be projected onto DG0 for stability'
+        k=conditional(le(T_prev,63.),thp.k + thp.dk*(T_prev),thp.k + thp.dk*(63.))
     elif thp.k_model=='ai':
-        k=conditional(lt(T_prev,353), 0.465, 0.) + conditional(And(ge(T_prev,353),lt(T_prev,383), 0.867, 0.)) + conditional(ge(T_prev,383),1.460,0.)
+        k=conditional(lt(T_prev,43), 0.465, 0.) + conditional(And(ge(T_prev,43),lt(T_prev,73), 0.867, 0.)) + conditional(ge(T_prev,73),1.460,0.)
 
     # define perfusion term using D > 0.8 as shutoff
     D_prev=interpolate(Constant(0.),W)
@@ -517,20 +555,23 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     # project D onto piecewise constant mesh to stop negative values
     D_prev_const = project_axisym(D_prev,W_dg_0)
     if thp.perf_model=='stop':
-        omega=conditional(gt(D_prev_const,0.8), thp.omega, 0.)
+        omega=conditional(gt(D_prev_const,thp.p_stop), thp.omega, 0.)
         print "check perfusion threshhold"
 
+    # old unscaled and unstable weak form    
+    # a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx
+    # L = f*v*r*dx+q*v*r*dx+v*omega*thp.rho*thp.c*thp.T0*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
 
     a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx
-    L = f*v*r*dx+q*v*r*dx+v*omega*thp.rho*thp.c*thp.T0*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
+    L = f*v*r*dx + q*v*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
 
 
     T = Function(W)
     T_out = Function(W)
 
     # set initial temperature for SAR
-    T = interpolate(thp.T_initial,W)
-#    T = project_axisym(thp.T_initial,W)
+#    T = interpolate(thp.T_initial,W)
+    T = project_axisym(thp.T_initial-310.,W)
 
     # assemble in advance of time iteration
     A = None
@@ -540,6 +581,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     file_SAR=File("%s/SAR.pvd" % problemname)
     file_cd=File("%s/cell-death.pvd" % problemname)
     file_perf=File("%s/perfusion.pvd" % problemname)
+    file_pot=File("%s/voltage.pvd" % problemname)
 
     # SAR update criteria
     Q = Function(W_dg)
@@ -574,7 +616,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         if (iu == nu) and (thp.em_method=="iterateRFA"):
             if imp_on: # control system switch
                 print "--+--+-- updating SAR                       --+--+--"        
-                Q, resistance, power = RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp)
+                Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp)
                 iu = 0
             else:
                 print "--+--+-- SAR offfffffff                     --+--+--"        
@@ -582,12 +624,22 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
                 resistance = 0.
                 power = 0.
                 iu = 0.
+        # if (iu == nu) and (thp.em_method=="mms-nonlinear-full"):
+        #     print "--+--+-- updating SAR                       --+--+--"        
+        #     Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp)
+        #     iu = 0
+
+        # check for power < 0
+        if (Q.vector().array().min()<0):
+            error('source term Q < 0')
+
+
 
         # assemble each iteration to account for previous time step
         dte.dt = dt
         cur_time.t = t
 
-        if thp.em_method=='iterate' or thp.em_method=='iterateRFA':
+        if thp.em_method=='iterate' or thp.em_method=='iterateRFA' or thp.em_method=="mms-nonlinear-full":
             f.assign(Q)
         D_prev_const.assign(project_axisym(D_prev,W_dg))
         b = assemble(L, tensor=b)
@@ -595,27 +647,27 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
 
         for bc in bcs:
             bc.apply(A, b)
-        # solve(A, T.vector(), b,
-        #       solver_parameters={"linear_solver": "mumps",
-        #             "preconditioner": "hypre_euclid"})
+#        solve(A, T.vector(), b,
+#              solver_parameters={"linear_solver": "mumps","preconditioner": "hypre_euclid"})
 
         solver.solve(A, T.vector(), b)
-
 
         # adapt T to ensure about 5 time steps per degree change
         nodal_T = T.vector().array()
         nodal_T_prev = T_prev.vector().array()
         T_error = N.abs(nodal_T-nodal_T_prev).max()
-        print "Max error: ", T_error, "   Time: ", t, "   dt: ", dt
+        print "Max error: ", T_error, "   Time: ", t+dt, "   dt: ", dt
 
-        if T_error < abs(thp.Tu-thp.Tl)*0.01 and dt < dt_max and step_inc:
+        if T_error < abs(thp.Tu-thp.Tl)*0.03 and dt < dt_max and step_inc:
+            # t += dt*.1
+            # dt = dt*1.1
             t += dt*.1
             dt = dt*1.1
-#            t += dt
-#            dt = dt*2.
             # ensure dt_max not exceeded
             if dt > dt_max:
                 # remove time step
+                # dt = dt/1.1
+                # t -= .1*dt
                 dt = dt/1.1
                 t -= .1*dt
                 # replace with dt_max
@@ -623,7 +675,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
                 t += dt_max
                 dt = dt_max
             print "**************************** INCREASE STEP *********************************"
-        elif T_error > abs(thp.Tu-thp.Tl)*0.2 and dt > dt_min:
+        elif T_error > abs(thp.Tu-thp.Tl)*0.3 and dt > dt_min:
 #            t = t - dt*0.5
 #            dt = dt*0.5
             t = t - dt*0.1
@@ -632,33 +684,46 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
             print "**************************** DECREASE STEP *********************************"
         else:
             # check that temp does not change too much
-            if T_error > abs(thp.Tu-thp.Tl)*0.2:
+            if T_error > abs(thp.Tu-thp.Tl)*0.3:
                 #print "step size too large"
                 if thp.stop_on_me:
+                    plot(T-T_prev)
+                    interactive()
                     error("step size too large")
                 else:
                     warning("step size too large")
+                    print "********* TIME STEP MAX ERROR ", T_error, " ****************"
                 
             # Test if output required and compute directly
             #eps = dt*0.001
 #            if any(N.logical_and(t_out >= t-dt,t_out < t+eps)):
-#            if any(N.logical_and(t_out >= t,t_out < t+dt+eps)):
-            if any(N.logical_and(t_out >= t-dt-eps, t_out < t)):
+            if any(N.logical_and(t_out > t,t_out < t+dt+eps)):
                 print "***************************** OUTPUT FILE **********************************"
 #                dt_0=N.abs(t_out[N.logical_and(t_out>=t-dt,t_out<t+eps)]-t+dt)
-#                dt_0=N.abs(t_out[N.logical_and(t_out >= t,t_out < t+dt+eps)]-t)
-                dt_0=N.abs(t_out[N.logical_and(t_out >= t-dt-eps, t_out < t)]-t+dt)
+                dt_0=N.abs(t_out[N.logical_and(t_out > t,t_out < t+dt+eps)]-t)
                 print dt_0
-                T_out.vector()[:] = T_prev.vector().array()+(T.vector().array()-T_prev.vector().array())/dt*(dt_0)
-                file_temp << T_out
-#                file_SAR << Q
-                file_SAR << project_axisym(f,W)
+                T_out.vector()[:] = T_prev.vector().array()+(T.vector().array()-T_prev.vector().array())/dt*dt_0
+
+                # scale back to Kelvin and change name
+                T_out = project_axisym(T_out+Constant(310.),W)
+                T_out.rename('Temperature',T_out.label())
+                file_temp << (T_out, t+dt_0[0])
+                
+                # rest just change name and output
+                Q_out = project_axisym(f,W)
+                Q_out.rename('SAR',Q_out.label())
+                file_SAR << Q_out
 
                 D.vector()[:] = 1.-cda[1::2] # viable (also only last value not linear interp as T)
                 file_cd << D
-                file_perf << project_axisym(omega,W_dg_0)
-                store_resistance[N.logical_and(t_out >= t-dt-eps, t_out < t)] = resistance
-                store_power[N.logical_and(t_out >= t-dt-eps, t_out < t)] = power
+                perf_out = project_axisym(omega,W_dg_0)
+                perf_out.rename('Perfusion',perf_out.label())
+                file_perf << perf_out
+#                store_resistance[N.logical_and(t_out>=t-dt,t_out<t+eps)] = resistance
+#                store_power[N.logical_and(t_out>=t-dt,t_out<t+eps)] = power
+                store_resistance[N.logical_and(t_out > t,t_out < t+dt+eps)] = resistance
+                store_power[N.logical_and(t_out > t,t_out < t+dt+eps)] = power
+#                file_pot << Vfield
                 
 
             # Update cell death
@@ -697,7 +762,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
             print "***************************** ACCEPT TIME **********************************"
 
     N.savetxt("%s/impedance.out" % problemname, (store_resistance, store_power), delimiter=',')   # output impedance
-    return T
+    return project_axisym(T+Constant(310.),W)
 
 # cell_death_func
 # 
@@ -733,10 +798,11 @@ def cell_death_func(y,t,n,kb,kf_,Tk,T_prev_nodal): #odeint
 #     return dydt
 
 def cell_death_func_class(t,y,args): # ode class
+    # scaled for T' = T-310
     # args = n, cdp.kb, cdp.kf_, cdp.Tk, T_prev_nodal
     dydt = N.array(y)
-    dydt[::2] = -args[2]*N.exp((args[4]-273.)/args[3])*(1.-y[::2])*y[::2]+args[1]*(1.-y[::2]-y[1::2])
-    dydt[1::2] = args[2]*N.exp((args[4]-273.)/args[3])*(1.-y[::2])*(1.-y[::2]-y[1::2])
+    dydt[::2] = -args[2]*N.exp((args[4]+37.)/args[3])*(1.-y[::2])*y[::2]+args[1]*(1.-y[::2]-y[1::2])
+    dydt[1::2] = args[2]*N.exp((args[4]+37.)/args[3])*(1.-y[::2])*(1.-y[::2]-y[1::2])
     
     return dydt
 
@@ -823,7 +889,7 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
     W_dg = FunctionSpace(restriction, 'DG', order) # capture SAR shape and discontinuity
 
     # interpolate T onto piecewise constant to stabilise conductivity
-    T_p = interpolate(T,W_dg0)
+    T_p = project_axisym(T,W_dg0)
 
     # set measure
     dss = ds[boundaries]
@@ -833,14 +899,14 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
     r = polar[0]
     z = polar[1]
     
-    ##     boundaries defined as:
-    ##         1 - symmetry condition at r = 0 (natural bc)
-    ##         2 - V = ground pad at tissue boundary
-    ##         3 - insulating condition (natural bc)
-    ##         4 - V = active tip
-    bc0 = DirichletBC(W, emp.V0, boundaries, 2)
-    bc1 = DirichletBC(W, emp.Vprobe, boundaries, 4)
-    bcs = [bc0, bc1]
+    # allocate boundary conditions to line regions defined in boundary mesh function
+    # symmetry and insulating are natural BCs
+    bcs = []
+    for index in emp.zero_V:
+        bcs.append(DirichletBC(W, emp.V0, boundaries, index))
+    
+    for index in emp.active_tip:
+        bcs.append(DirichletBC(W, emp.Vprobe, boundaries, index))
 
     # define variational problem
     V = TrialFunction(W)
@@ -849,16 +915,16 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
     # define electrical conductivity
     sigma=emp.cond
     if emp.cond_model=='linear':
-        sigma=emp.cond + emp.cond_rate*(T_p-thp.T0)
+        sigma=emp.cond + emp.cond_rate*(T_p)
     elif emp.cond_model=='nonlinear':
-        sigma=(conditional(le(T_p,thp.Tu), emp.cond + emp.cond_rate*(T_p-thp.T0), 0.) +
-            conditional(And(gt(T_p,thp.Tu),le(T_p,thp.Tu+5.)), (emp.cond_vap - (emp.cond + emp.cond_rate*(thp.Tu-thp.T0)))/5.*(T_p-thp.Tu) + (emp.cond + emp.cond_rate*(thp.Tu-thp.T0)), 0.) +
+        sigma=(conditional(le(T_p,thp.Tu), emp.cond + emp.cond_rate*(T_p), 0.) +
+            conditional(And(gt(T_p,thp.Tu),le(T_p,thp.Tu+5.)), (emp.cond_vap - (emp.cond + emp.cond_rate*(thp.Tu)))/5.*(T_p-thp.Tu) + (emp.cond + emp.cond_rate*(thp.Tu)), 0.) +
             conditional(gt(T_p,thp.Tu+5.), emp.cond_vap, 0.))
 
 #    File("%s/sigma.pvd" % problemname) << project_axisym(sigma,W_dg0)
 
     a = sigma*inner(nabla_grad(V), nabla_grad(U))*r*dx
-    L = Constant(0.)*U*r*dx
+    L = emp.mms_source*U*r*dx
 
     V = Function(W)
 
@@ -875,7 +941,7 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
 
     # SAR = project_axisym(sigma*inner(nabla_grad(V), nabla_grad(V))*r,W_dg)
 
-    # plot(SAR)
+    # plot(V)
     # interactive()
 
     # compute impedance for control system as purely electrical
@@ -888,7 +954,7 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
 #    print "power: ", power
 #    print "resistance according to Kroger & elmer: ", (emp.Vprobe)**2/power
 
-    return SAR, resistance, power
+    return SAR, resistance, power, V
 
 # define a projection function for axisymetric to avoid mistakes
 
@@ -902,6 +968,7 @@ def project_axisym(func,space):
 
     a = inner(w,v)*r*dx
     L = inner(func, v)*r*dx
+
     pfunc = Function(space)
     solve(a == L, pfunc)
 

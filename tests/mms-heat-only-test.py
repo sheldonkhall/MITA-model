@@ -23,6 +23,7 @@
 from axisymm_mwa import *
 
 problemname = "mms-heat-only-test"
+set_log_level(ERROR) # remove warnings for tests
 
 # Load geometry
 mesh = Mesh("mesh/%s.xml" % problemname)
@@ -38,19 +39,21 @@ z = rz[1]
 
 # set thermal parameters
 thermal_parameters.rho_c_t = 0.
-thermal_parameters.rho_c_v = 0. # values for vapourised tissue
+thermal_parameters.rho_c_v = 0.
 thermal_parameters.k = Constant(0.56)
 thermal_parameters.omega = Constant(0.004)
 thermal_parameters.rho = Constant(1.)
 thermal_parameters.c = Constant(3640.)
 thermal_parameters.restrict_th_mesh = 1  # region to compute thermal solution in
+thermal_parameters.T0 = Constant(310.)
+thermal_parameters.T_initial = Constant(310.)
 
 # define custom source
 R = Constant(1.)
 eta = sqrt(thermal_parameters.omega*thermal_parameters.c/thermal_parameters.k)
 jf = Constant(2.40483)
 Lz = Constant(10.)
-q = ((r*(2*jf**2*Lz**2 + R**2*(pi**2 + 4*Lz**2*eta**2))*bessel_J(0,(jf*r)/R) \
+q = 60*((r*(2*jf**2*Lz**2 + R**2*(pi**2 + 4*Lz**2*eta**2))*bessel_J(0,(jf*r)/R) \
     - 2*jf*Lz**2*(-2*R*bessel_J(1,(jf*r)/R) + jf*r*bessel_J(2,(jf*r)/R))) \
     *cos((pi*z)/(2.*Lz)))/(4.*Lz**2*r*R**2)
 thermal_parameters.Q = project_axisym(q*thermal_parameters.k,V)
@@ -65,13 +68,16 @@ thermal_parameters.k_model = 'constant'
 thermal_parameters.perf_model = 'constant'
 thermal_parameters.em_method = 'custom'
 thermal_parameters.stop_on_me = False
-
+thermal_parameters.cda_update = False
+thermal_parameters.bulk_tissue = [5] # set correct dirichlet boundary condition
 T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_min, dt_max, t_out, thermal_parameters, EM_parameters)
 
 # This script evaluates the MMS solution
+# plot(T)
+# interactive()
 
-theta = bessel_J(0,jf*r/R)*cos(pi*z/2/Lz)
-temp = theta + 310
+theta = 60*bessel_J(0,jf*r/R)*cos(pi*z/2/Lz)+310.
+temp = theta
 T_ref = project_axisym(temp,T.function_space())
 T_error = project_axisym(abs(T-T_ref),T.function_space())
 
@@ -81,3 +87,4 @@ print 'The L2 norm error is: %g' % (energy)
 
 # absolute error plot
 File("%s/T-error.pvd" % problemname) << T_error
+File("%s/temperature.pvd" % problemname) << T

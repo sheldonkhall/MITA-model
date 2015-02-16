@@ -19,6 +19,7 @@ from axisymm_mwa import *
 import numpy as np
 
 problemname = "cell-death-test"
+set_log_level(ERROR) # remove warnings for tests
 
 thermal_parameters.restrict_th_mesh = 1  # region to compute thermal solution in
 
@@ -57,9 +58,7 @@ thermal_parameters.k_method = 'constant'
 
 set_log_active(False) # switch off fenics messages
 
-print 'enter'
 T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_min, dt_max, t_out, thermal_parameters, EM_parameters)
-print 'exit'
 
 # call matlab ode solver for comparison solution
 from subprocess import call
@@ -70,4 +69,5 @@ sol = N.loadtxt("matlab/cell_death_test_sol.dat",delimiter=",")
 file_matlab=File("%s/matlab.pvd" % problemname)
 for t in range(0,tmax):
     T_ref = interpolate(Constant(sol[t,1]),T.function_space())
+    T_ref.rename('cell-death',T_ref.label())
     file_matlab << T_ref

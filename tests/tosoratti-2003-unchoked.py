@@ -21,6 +21,7 @@
 from axisymm_mwa import *
 
 problemname = "tosoratti-2003-unchoked"
+set_log_level(ERROR) # remove warnings for tests
 
 EM_parameters.freq = 2.45e9 # Probe frequency
 EM_parameters.om = 2 * pi * EM_parameters.freq # Probe angular frequency

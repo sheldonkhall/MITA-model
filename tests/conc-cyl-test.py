@@ -20,6 +20,7 @@
 from axisymm_mwa import *
 
 problemname = "conc-cyl-test"
+set_log_level(ERROR) # remove warnings for tests
 
 EM_parameters.freq = 7.0e7 # Probe frequency
 EM_parameters.om = 2 * pi * EM_parameters.freq # Probe angular frequency
@@ -144,7 +145,7 @@ t = interpolate(f,Q.function_space())
 File("%s/analytic.pvd" % problemname) << t
 
 # plot solution
-plot(mag_E_z, title="Magnitude of E_z (Numerical solution)")
+#plot(mag_E_z, title="Magnitude of E_z (Numerical solution)")
 
 # L2 norm error
 energy = assemble((mag_E_z - t)*dx)
@@ -153,5 +154,5 @@ print 'The L2 norm error is: %g' % (energy)
 # plot absolute error
 h = project_axisym(abs(t - mag_E_z),t.function_space())
 File("%s/error.pvd" % problemname) << h
-plot(h, title="Plot of the Absolute Error")
-interactive()
+#plot(h, title="Plot of the Absolute Error")
+#interactive()

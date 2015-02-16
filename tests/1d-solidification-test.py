@@ -22,6 +22,7 @@ import scipy as sp
 from scipy import special, optimize
 
 problemname = "1d-solidification-test"
+set_log_level(ERROR) # remove warnings for tests
 
 # Load geometry
 mesh = Mesh("mesh/%s.xml" % problemname)
@@ -120,6 +121,7 @@ afile = File("%s/analytic.pvd" % problemname)
 for i in t_out:
     t0 = i
     Ta = interpolate(Ta_f,w)
+    Ta.rename('Temperature',Ta.label())
     afile << Ta
 
 ##### need to fix above

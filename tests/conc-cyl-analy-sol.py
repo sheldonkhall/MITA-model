@@ -35,6 +35,7 @@ eps_0 = S.epsilon_0
 #
 
 problemname = "conc-cyl-test"
+set_log_level(ERROR) # remove warnings for tests
 
 # Define uniform problemname parameters
 freq = 7.0e7 # Probe frequency
