@@ -20,7 +20,9 @@ from axisymm_mwa import *
 import numpy as np
 import scipy as sp
 from scipy import special, optimize
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "1d-solidification-test"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -125,3 +127,6 @@ for i in t_out:
     afile << Ta
 
 ##### need to fix above
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

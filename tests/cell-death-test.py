@@ -17,7 +17,9 @@
 
 from axisymm_mwa import *
 import numpy as np
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "cell-death-test"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -71,3 +73,6 @@ for t in range(0,tmax):
     T_ref = interpolate(Constant(sol[t,1]),T.function_space())
     T_ref.rename('cell-death',T_ref.label())
     file_matlab << T_ref
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

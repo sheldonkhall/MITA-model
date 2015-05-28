@@ -48,6 +48,7 @@ dt_max = .001 # absolute step size maximum
 tmax = 2 # maximum time (s)
 t_out = np.linspace(.2,tmax,10) # numpy vector of times at which to save to disk
 dt = .001 # time step (s)
+
 thermal_parameters.k_model = 'linear'
 thermal_parameters.perf_model = 'constant'
 thermal_parameters.em_method = 'mms-nonlinear'
@@ -62,6 +63,7 @@ T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
 afile = File("%s/mms.pvd" % problemname)
 
 # create ufl function for analytic solution
+V = FunctionSpace(mesh, "CG", 2)
 M = 23.
 P = 1.
 L = 1.
@@ -70,7 +72,7 @@ X = 310.
 T_mms = Expression("M*cos(P*x[0])*sin(L*x[1])*exp(-F*t)+X",M=M,P=P,L=L,F=F,X=X,t=0.)
 for i in t_out:
     T_mms.t=i
-    T_mms_out=interpolate(T_mms,T.function_space())
+    T_mms_out=interpolate(T_mms,V)
     T_mms_out.rename('Temperature',T_mms_out.label())
     afile << (T_mms_out,i)
 
@@ -79,7 +81,7 @@ print 'end time:   ', tm.strftime('%H:%M:%S')
 
 # L2 norm error
 # Get the r and z components
-rz = T.function_space().cell().x
+rz = V.cell().x
 r = rz[0]
 z = rz[1]
 
@@ -88,5 +90,8 @@ energy = assemble(abs(T-T_mms)*r*dx)
 print 'The L2 norm error is: %g' % (energy)
 
 # absolute error plot
-T_error = project_axisym(abs(T-T_mms),T.function_space())
+T_error = project_axisym(abs(T-T_mms),V)
 File("%s/T-error.pvd" % problemname) << T_error
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

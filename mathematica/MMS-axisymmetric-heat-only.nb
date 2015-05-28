@@ -1,0 +1,184 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      5322,        175]
+NotebookOptionsPosition[      4823,        153]
+NotebookOutlinePosition[      5160,        168]
+CellTagsIndexPosition[      5117,        165]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{"\[Theta]", "=", 
+  RowBox[{
+   RowBox[{"BesselJ", "[", 
+    RowBox[{"0", ",", 
+     RowBox[{
+      FractionBox["f", "R"], " ", "r"}]}], "]"}], 
+   RowBox[{"Cos", "[", 
+    RowBox[{
+     FractionBox["\[Pi]", 
+      RowBox[{"2", " ", "L"}]], " ", "z"}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"-", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       FractionBox["1", "r"], 
+       RowBox[{"D", "[", 
+        RowBox[{
+         RowBox[{"r", " ", 
+          RowBox[{"D", "[", 
+           RowBox[{"\[Theta]", ",", "r"}], "]"}]}], ",", "r"}], "]"}]}], "+", 
+      
+      RowBox[{"D", "[", 
+       RowBox[{
+        RowBox[{"D", "[", 
+         RowBox[{"\[Theta]", ",", "z"}], "]"}], ",", "z"}], "]"}]}], ")"}]}], 
+   "+", 
+   RowBox[{
+    SuperscriptBox["\[Eta]", "2"], "\[Theta]"}]}], "//", 
+  "Simplify"}], "\[IndentingNewLine]", 
+ RowBox[{"CForm", "[", "%", "]"}]}], "Input",
+ CellChangeTimes->{{3.5987923367134542`*^9, 3.5987925010448093`*^9}, {
+  3.5987925667073603`*^9, 3.598792653964588*^9}, {3.5987927537313337`*^9, 
+  3.598792763114134*^9}, {3.5987929452349653`*^9, 3.5987929749127398`*^9}, {
+  3.598852208647806*^9, 3.598852214563307*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"BesselJ", "[", 
+   RowBox[{"0", ",", 
+    FractionBox[
+     RowBox[{"f", " ", "r"}], "R"]}], "]"}], " ", 
+  RowBox[{"Cos", "[", 
+   FractionBox[
+    RowBox[{"\[Pi]", " ", "z"}], 
+    RowBox[{"2", " ", "L"}]], "]"}]}]], "Output",
+ CellChangeTimes->{{3.598792606153113*^9, 3.598792626551468*^9}, 
+   3.598792662825131*^9, 3.5987927727086887`*^9, {3.5987929509492083`*^9, 
+   3.598792975750804*^9}, 3.5988522171167994`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", 
+   RowBox[{"4", " ", 
+    SuperscriptBox["L", "2"], " ", "r", " ", 
+    SuperscriptBox["R", "2"]}]], 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"r", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"2", " ", 
+         SuperscriptBox["f", "2"], " ", 
+         SuperscriptBox["L", "2"]}], "+", 
+        RowBox[{
+         SuperscriptBox["R", "2"], " ", 
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox["\[Pi]", "2"], "+", 
+           RowBox[{"4", " ", 
+            SuperscriptBox["L", "2"], " ", 
+            SuperscriptBox["\[Eta]", "2"]}]}], ")"}]}]}], ")"}], " ", 
+      RowBox[{"BesselJ", "[", 
+       RowBox[{"0", ",", 
+        FractionBox[
+         RowBox[{"f", " ", "r"}], "R"]}], "]"}]}], "-", 
+     RowBox[{"2", " ", "f", " ", 
+      SuperscriptBox["L", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "2"}], " ", "R", " ", 
+         RowBox[{"BesselJ", "[", 
+          RowBox[{"1", ",", 
+           FractionBox[
+            RowBox[{"f", " ", "r"}], "R"]}], "]"}]}], "+", 
+        RowBox[{"f", " ", "r", " ", 
+         RowBox[{"BesselJ", "[", 
+          RowBox[{"2", ",", 
+           FractionBox[
+            RowBox[{"f", " ", "r"}], "R"]}], "]"}]}]}], ")"}]}]}], ")"}], " ", 
+   RowBox[{"Cos", "[", 
+    FractionBox[
+     RowBox[{"\[Pi]", " ", "z"}], 
+     RowBox[{"2", " ", "L"}]], "]"}]}]}]], "Output",
+ CellChangeTimes->{{3.598792606153113*^9, 3.598792626551468*^9}, 
+   3.598792662825131*^9, 3.5987927727086887`*^9, {3.5987929509492083`*^9, 
+   3.598792975750804*^9}, 3.598852217229815*^9}],
+
+Cell["\<\
+((r*(2*Power(f,2)*Power(L,2) + 
+          Power(R,2)*(Power(Pi,2) + 4*Power(L,2)*Power(\[Eta],2)))*
+        BesselJ(0,(f*r)/R) - 
+       2*f*Power(L,2)*(-2*R*BesselJ(1,(f*r)/R) + 
+          f*r*BesselJ(2,(f*r)/R)))*Cos((Pi*z)/(2.*L)))/
+   (4.*Power(L,2)*r*Power(R,2))\
+\>", "Output",
+ CellChangeTimes->{{3.598792606153113*^9, 3.598792626551468*^9}, 
+   3.598792662825131*^9, 3.5987927727086887`*^9, {3.5987929509492083`*^9, 
+   3.598792975750804*^9}, 3.5988522172332*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"f", "=", 
+  RowBox[{"N", "[", 
+   RowBox[{"BesselJZero", "[", 
+    RowBox[{"0", ",", "1"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.598792812253358*^9, 3.598792838083568*^9}, {
+  3.5987929104019136`*^9, 3.5987929189212503`*^9}, {3.598792969193048*^9, 
+  3.598792969360723*^9}}],
+
+Cell[BoxData["2.404825557695773`"], "Output",
+ CellChangeTimes->{3.598792919445718*^9, 3.598792978997291*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 855},
+WindowMargins->{{141, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1201, 37, 132, "Input"],
+Cell[1783, 61, 455, 12, 49, "Output"],
+Cell[2241, 75, 1624, 48, 92, "Output"],
+Cell[3868, 125, 481, 10, 136, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4386, 140, 309, 7, 32, "Input"],
+Cell[4698, 149, 109, 1, 32, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

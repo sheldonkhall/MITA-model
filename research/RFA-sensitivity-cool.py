@@ -1,6 +1,6 @@
-# RFA-sensitivity
+# RFA-sensitivity-cool
 #
-# input file for running the sensitivity analysis
+# input file for running the sensitivity analysis with cooled probe
 #
 # This file repeatedly calls the MITA model using a table of input parameters
 # that explore the parameter space. The analysis of the results of these
@@ -29,7 +29,7 @@ import time as tm
 import os
 import scipy.io as sio
 
-problemname = "RFA-sensitivity"
+problemname = "RFA-sensitivity-cool"
 
 # define general parameters
 EM_parameters.cond = 0.2
@@ -65,8 +65,11 @@ thermal_parameters.rho = Constant(1.)
 thermal_parameters.c = Constant(1.)
 thermal_parameters.T0 = Constant(310.)
 thermal_parameters.T_initial = Constant(310.)
-thermal_parameters.restrict_th_mesh = 1  # region to compute thermal solution in
+thermal_parameters.restrict_th_mesh = [1]  # region to compute thermal solution in
 thermal_parameters.bulk_tissue = [2] # fixed temperature (bulk) boundary condition
+thermal_parameters.cool_probe = [4] # cooled probe surface
+thermal_parameters.cool_probe_temp = 310. # temperature of cooled probe
+thermal_parameters.h_transfer = 3366. # probe surface heat transfer coefficient
 
 # solver options
 dt_min = .00001 # absolute step size minimum (0.0001 good)
@@ -83,10 +86,11 @@ print "need to check version with nonlinear perfusion, may not be updating"
 # thermal_parameters.stop_on_me = False
 # thermal_parameters.cda_update = False
 
+
 set_log_active(False) # switch off fenics messages
 
 # pick experiment to run
-experiment = 'experiment-1'
+experiment = 'experiment-6'
 
 # define function for parameter scaling
 def scale_param(upper,lower,value):
@@ -145,8 +149,8 @@ logfile = open('%s/log.txt' % problemname, 'w')
 logfile.write('Beginning ' + experiment + '\n')
 
 # loop through runs in experiment
-#for run in range(parameters.shape[0]):
-for run in [0]:
+for run in range(parameters.shape[0]):
+#for run in [0]:
     
     # make dir for run
     problemnametemp = problemname + '/run' + str(run+1)

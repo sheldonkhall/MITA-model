@@ -19,7 +19,9 @@ from scipy import special
 import numpy as N
 from dolfin import *
 import sys
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 #
 # - Some constants
 #
@@ -34,7 +36,7 @@ eps_0 = S.epsilon_0
 # - Define Problem here
 #
 
-problemname = "conc-cyl-test"
+problemname = "conc-cyl-analy-sol"
 set_log_level(ERROR) # remove warnings for tests
 
 # Define uniform problemname parameters
@@ -108,3 +110,6 @@ x = N.linalg.solve(A,b)
 print x
 
 print N.dot(A,x)
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

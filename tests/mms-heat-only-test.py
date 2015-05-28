@@ -21,7 +21,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from axisymm_mwa import *
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "mms-heat-only-test"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -79,7 +81,7 @@ T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
 theta = 60*bessel_J(0,jf*r/R)*cos(pi*z/2/Lz)+310.
 temp = theta
 T_ref = project_axisym(temp,T.function_space())
-T_error = project_axisym(abs(T-T_ref),T.function_space())
+T_error = project_axisym(abs(T-T_ref),V)
 
 # L2 norm error
 energy = assemble(abs(T-T_ref)*r*dx)
@@ -87,4 +89,7 @@ print 'The L2 norm error is: %g' % (energy)
 
 # absolute error plot
 File("%s/T-error.pvd" % problemname) << T_error
-File("%s/temperature.pvd" % problemname) << T
+File("%s/temperature.pvd" % problemname) << project_axisym(T,V)
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

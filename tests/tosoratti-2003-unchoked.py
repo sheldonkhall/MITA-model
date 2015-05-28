@@ -19,7 +19,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from axisymm_mwa import *
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "tosoratti-2003-unchoked"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -100,3 +102,6 @@ U, Q, E_r, E_z = compute_SAR_nl(problemname, mesh, interior, boundaries, EM_para
 
 file_SAR=File("%s/SAR.pvd" % problemname)
 file_SAR << Q
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

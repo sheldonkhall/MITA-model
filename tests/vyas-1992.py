@@ -18,7 +18,9 @@
 
 from axisymm_mwa import *
 import numpy as np
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "vyas-1992"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -124,3 +126,6 @@ File("%s/analytic_solution.pvd" % problemname) << RT
 #     yk = K*y[0]
 
 #     return yk
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

@@ -21,7 +21,9 @@
 
 from axisymm_mwa import *
 import numpy as np
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 # define problem name
 problemname = "ji-brace-2011"
 set_log_level(ERROR) # remove warnings for tests
@@ -117,3 +119,6 @@ thermal_parameters.em_method = 'constant'
 thermal_parameters.k_model = 'constant'
 
 T = compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_min, dt_max, t_out, thermal_parameters, EM_parameters)
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

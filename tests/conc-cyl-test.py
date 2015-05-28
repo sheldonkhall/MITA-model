@@ -18,7 +18,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from axisymm_mwa import *
+import time as tm
 
+start_time = tm.strftime('%H:%M:%S')
 problemname = "conc-cyl-test"
 set_log_level(ERROR) # remove warnings for tests
 
@@ -156,3 +158,6 @@ h = project_axisym(abs(t - mag_E_z),t.function_space())
 File("%s/error.pvd" % problemname) << h
 #plot(h, title="Plot of the Absolute Error")
 #interactive()
+
+print 'start time: ', start_time
+print 'end time:   ', tm.strftime('%H:%M:%S')

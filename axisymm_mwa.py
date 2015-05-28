@@ -160,9 +160,14 @@ class thermal_parameters:
     Q = Constant(0.) # allow custom heat source to be given
     cda_update = True # compute cell death
     p_stop = 0.8 # value of viability at which to stop perfusion
+    cool_probe_temp = 310. # coolant temp on probe boundary
+    cool_probe = 100. # boundary to apply condition
+    h_transfer = 0. # heat transfer coefficient into coolant
+    nu = 1. # number of iterations of heat solver before updating heat source
 
     # boundaries
     bulk_tissue = []
+    cool_probe = []
 
 class cell_death_parameters:
     kb = 7.77e-3
@@ -231,10 +236,10 @@ def compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T, thp):
     T_p = project_axisym(T,V0_dc)
     T_array = T_p.vector().array()
     eps_r_array = eps_r.vector().array()
-    eps_r_array[interior.array()==thp.restrict_th_mesh] = emp.es1*(1-1/(1+N.exp(emp.es2-emp.es3*(T_array[interior.array()==thp.restrict_th_mesh]-273.+310))))+emp.es4
+    eps_r_array[interior.array()==thp.restrict_th_mesh] = emp.es1*(1-1/(1+N.exp(emp.es2-emp.es3*(T_array[interior.array()==thp.restrict_th_mesh]+37.))))+emp.es4
     eps_r.vector()[:] = eps_r_array
     sigma_array = sigma.vector().array()
-    sigma_array[interior.array()==thp.restrict_th_mesh] = emp.ss1*(1-1/(1+N.exp(emp.ss2-emp.ss3*(T_array[interior.array()==thp.restrict_th_mesh]-273.+310))))+emp.ss4
+    sigma_array[interior.array()==thp.restrict_th_mesh] = emp.ss1*(1-1/(1+N.exp(emp.ss2-emp.ss3*(T_array[interior.array()==thp.restrict_th_mesh]+37.))))+emp.ss4
     sigma.vector()[:] = sigma_array
     #eps_r = es1*(1-1/(1+exp(es2-es3*(T-273.))))+es4
     #sigma = ss1*(1-1/(1+exp(ss2-ss3*(T-273.))))+ss4
@@ -316,12 +321,12 @@ def compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T, thp):
         - r * k_0 * T[1] * (srer_im * (H_phi[1]) - srer_re * (H_phi[0])) * dss(4)
 
     ### gives better solution to coax problem wpbc without source
-    ## a = r * s * dx - \
-    ##     r * m * dx + \
-    ##     - r * k_0 * T[0] * (srer_im * (H_phi[0]) + srer_re * (H_phi[1])) * dss(2) \
-    ##     - r * k_0 * T[1] * (srer_im * (H_phi[1]) - srer_re * (H_phi[0])) * dss(2) \
-    ##     - r * k_0 * T[0] * (srer_im * (H_phi[0]) + srer_re * (H_phi[1])) * dss(4) \
-    ##     - r * k_0 * T[1] * (srer_im * (H_phi[1]) - srer_re * (H_phi[0])) * dss(4)
+    # a = r * s * dx - \
+    #     r * m * dx + \
+    #     - r * k_0 * T[0] * (srer_im * (H_phi[0]) + srer_re * (H_phi[1])) * dss(2) \
+    #     - r * k_0 * T[1] * (srer_im * (H_phi[1]) - srer_re * (H_phi[0])) * dss(2) \
+    #     - r * k_0 * T[0] * (srer_im * (H_phi[0]) + srer_re * (H_phi[1])) * dss(4) \
+    #     - r * k_0 * T[1] * (srer_im * (H_phi[1]) - srer_re * (H_phi[0])) * dss(4)
 
     L = r * (T[0]+T[1]) * f * dx + r * emp.om * eps_0 * E0 * T[1] * dss(3) +\
         r * k_0 * T[0] * (srer_im * (- 2*emp.H_phi_0_re) + srer_re * (- 2*emp.H_phi_0_im)) * dss(4) +\
@@ -375,10 +380,8 @@ def compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T, thp):
                 "preconditioner": "hypre_euclid"})
 
     # compute SAR
-#    Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_Re)
+    #Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_Re)
     Q = project_axisym(0.5 * sigma * (E_r[0] ** 2 + E_r[1] ** 2 + E_z[0] ** 2 + E_z[1] ** 2),V0_dc)
-    print "!!!!!!!!!!!!!!!!!!! project onto discontinuous removes neg values investigate !!!!!!!!!!!!"
-
 
     # compute power according to RFA
     power = assemble(Q*r*dx)*2*N.pi
@@ -420,8 +423,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
 
     #checks
     ensure_dir(problemname) # check directory exists for results
-    #eps = N.finfo(float).eps # useful quantity
-    eps = 1e-10 # eps above for some reason not good enough and had to make larger
+    eps = N.finfo(float).eps # useful quantity
     if t_out.size == 1 and t_out[0] > dt_max-eps: # catch output error
         print 'single time point out'
     elif N.any(N.diff(t_out)<dt_max-eps):
@@ -442,10 +444,22 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     #solver.parameters["maximum_iterations"] = 1000
     #set_log_level(DEBUG)
 
+    # output files
+    file_temp=File("%s/enthalpy.pvd" % problemname)
+    file_SAR=File("%s/SAR.pvd" % problemname)
+    file_cd=File("%s/cell-death.pvd" % problemname)
+    file_perf=File("%s/perfusion.pvd" % problemname)
+    file_vfield=File("%s/voltage.pvd" % problemname)
+
     # define a restriction
-    #restriction = Restriction(interior,3) # tosoratti-2003
-    #restriction = Restriction(interior,1) # gas-probe
-    restriction = Restriction(interior,thp.restrict_th_mesh) # restrict thermal calc to tissue only
+    # to generalise this define new meshfunction that sets to 1 everything in restriction
+    interior_new = MeshFunction("uint",interior)
+    help = N.asarray(interior_new.array())
+    for ent in N.nditer(help, op_flags=['readwrite']):
+        ent[...] = N.where(N.any(ent == thp.restrict_th_mesh),1,0)
+    interior_new.array()[:] = help
+
+    restriction = Restriction(interior_new,1) # restrict thermal calc to tissue only
     W = FunctionSpace(restriction, 'CG', order)
     W_dg = FunctionSpace(restriction, 'DG', order) # DG SAR
     W_dg_0 = FunctionSpace(restriction, 'DG', 0) # material properties (perfusion etc)
@@ -481,7 +495,6 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         Q = Expression('2*60*70/pi/pow(0.0045,2)*exp(-2*pow(x[0],2)/pow(0.0045,2)-60*x[1])')
     elif thp.em_method=='RFA-const' or thp.em_method=='iterateRFA':
         Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T_prev, thp)
-        File("%s/voltage.pvd" % problemname) << Vfield
     elif thp.em_method=='custom':
         Q = thp.Q
     elif thp.em_method=='mms-nonlinear':
@@ -491,8 +504,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         H = 0.512
         R = 0.02*0.512
         F = 1.
-#        Q = (M*(M*pow(P,2)*r*R*pow(cos(P*r),2) - 2*pow(L,2)*M*r*R*pow(cos(P*r),2)*cos(2*L*z) - M*pow(P,2)*r*R*pow(cos(P*r),2)*cos(2*L*z) + 2*exp(F*cur_time)*H*pow(L,2)*r*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*pow(P,2)*r*cos(P*r)*sin(L*z) - 2*exp(F*cur_time)*F*r*thp.rho_c_t*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*P*sin(P*r)*sin(L*z) - 2*M*pow(P,2)*r*R*pow(sin(P*r),2)*pow(sin(L*z),2) + M*P*R*sin(2*P*r)*pow(sin(L*z),2)))/(2.*exp(2*F*cur_time)*r)
-        Q = (M*(M*P*R*(2*P*r*cos(2*P*r) + sin(2*P*r)) - M*R*cos(2*L*z)*(2*pow(L,2)*r + 2*(pow(L,2) + pow(P,2))*r*cos(2*P*r) + P*sin(2*P*r)) + 4*exp(F*cur_time)*(r*(H*(pow(L,2) + pow(P,2)) - F*thp.rho_c_t)*cos(P*r) + H*P*sin(P*r))*sin(L*z)))/(4.*exp(2*F*cur_time)*r)
+        Q = (M*(M*pow(P,2)*r*R*pow(cos(P*r),2) - 2*pow(L,2)*M*r*R*pow(cos(P*r),2)*cos(2*L*z) - M*pow(P,2)*r*R*pow(cos(P*r),2)*cos(2*L*z) + 2*exp(F*cur_time)*H*pow(L,2)*r*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*pow(P,2)*r*cos(P*r)*sin(L*z) - 2*exp(F*cur_time)*F*r*thp.rho_c_t*cos(P*r)*sin(L*z) + 2*exp(F*cur_time)*H*P*sin(P*r)*sin(L*z) - 2*M*pow(P,2)*r*R*pow(sin(P*r),2)*pow(sin(L*z),2) + M*P*R*sin(2*P*r)*pow(sin(L*z),2)))/(2.*exp(2*F*cur_time)*r)
     # elif thp.em_method=='mms-nonlinear-full':
     #     M = 310.
     #     P = 1.
@@ -526,6 +538,10 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     bcs = []
     for index in thp.bulk_tissue:
         bcs.append(DirichletBC(W, 0., boundaries, index))
+
+    # for index in thp.cool_probe:
+    #     bcs.append(DirichletBC(W, thp.cool_probe_temp-310., boundaries, index))
+
     # for a neumann condition to create a heat sink at r=0 set gmsh to 6
 
     # define variational problem
@@ -562,7 +578,13 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     # a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx
     # L = f*v*r*dx+q*v*r*dx+v*omega*thp.rho*thp.c*thp.T0*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
 
-    a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx
+    # scaled but no heat transfer coefficient
+    # a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx
+    # L = f*v*r*dx + q*v*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
+
+    # heat transfer
+    a = k*inner(nabla_grad(T), nabla_grad(v))*r*dx + v*omega*thp.rho*thp.c*T*r*dx + v*rc1/dte*T*r*dx + v*rc2/dte*T*r*dx + v*rc3/dte*T*r*dx + v*T*thp.h_transfer*r*dss(4)
+
     L = f*v*r*dx + q*v*r*dx + v*rc1/dte*T_prev*r*dx + v*rc2/dte*T_prev*r*dx + v*rc3/dte*T_prev*r*dx + v*thp.Q_sink/(2*pi)*dss(6)
 
 
@@ -577,16 +599,9 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
     A = None
     b = None
 
-    file_temp=File("%s/enthalpy.pvd" % problemname)
-    file_SAR=File("%s/SAR.pvd" % problemname)
-    file_cd=File("%s/cell-death.pvd" % problemname)
-    file_perf=File("%s/perfusion.pvd" % problemname)
-    file_pot=File("%s/voltage.pvd" % problemname)
-
     # SAR update criteria
     Q = Function(W_dg)
-    iu = 0
-    nu = 1
+    iu = thp.nu-1
     store_resistance = N.array(t_out) # save the resistance at output times
     store_power = N.array(t_out) # save power
     power = 0.
@@ -609,15 +624,16 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         # this is SLOW so introduce index iu
         # iu increments each transient iteration, when it reaches nu it updates SAR
         iu += 1
-        if (iu == nu) and (thp.em_method=="iterate"):
+        if (iu == thp.nu) and (thp.em_method=="iterate"):
             print "--+--+-- updating SAR                       --+--+--"        
             U, Q, E_r, E_z = compute_SAR_nl(problemname, mesh, interior, boundaries, emp, T,thp)
             iu = 0
-        if (iu == nu) and (thp.em_method=="iterateRFA"):
+        if (iu == thp.nu) and (thp.em_method=="iterateRFA"):
             if imp_on: # control system switch
                 print "--+--+-- updating SAR                       --+--+--"        
                 Q, resistance, power, Vfield = RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp)
                 iu = 0
+
             else:
                 print "--+--+-- SAR offfffffff                     --+--+--"        
                 Q = interpolate(Constant(0.),W_dg)
@@ -632,7 +648,6 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         # check for power < 0
         if (Q.vector().array().min()<0):
             error('source term Q < 0')
-
 
 
         # assemble each iteration to account for previous time step
@@ -656,7 +671,10 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
         nodal_T = T.vector().array()
         nodal_T_prev = T_prev.vector().array()
         T_error = N.abs(nodal_T-nodal_T_prev).max()
-        print "Max error: ", T_error, "   Time: ", t+dt, "   dt: ", dt
+        print "max T err: ", T_error, "   t: ", t+dt, "   dt: ", dt, "   pow: ", power, "   imp: ", resistance
+
+        #plot(T)
+        #interactive()
 
         if T_error < abs(thp.Tu-thp.Tl)*0.03 and dt < dt_max and step_inc:
             # t += dt*.1
@@ -713,17 +731,22 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
                 Q_out = project_axisym(f,W)
                 Q_out.rename('SAR',Q_out.label())
                 file_SAR << Q_out
+                # V_out = project_axisym(Vfield,W)
+                # V_out.rename('Voltage',V_out.label())
+                # file_vfield << V_out
 
                 D.vector()[:] = 1.-cda[1::2] # viable (also only last value not linear interp as T)
                 file_cd << D
-                perf_out = project_axisym(omega,W_dg_0)
-                perf_out.rename('Perfusion',perf_out.label())
-                file_perf << perf_out
+
+                # perf_out = project_axisym(omega,W_dg_0)
+                # perf_out.rename('Perfusion',perf_out.label())
+                # file_perf << perf_out
+
+
 #                store_resistance[N.logical_and(t_out>=t-dt,t_out<t+eps)] = resistance
 #                store_power[N.logical_and(t_out>=t-dt,t_out<t+eps)] = power
                 store_resistance[N.logical_and(t_out > t,t_out < t+dt+eps)] = resistance
                 store_power[N.logical_and(t_out > t,t_out < t+dt+eps)] = power
-#                file_pot << Vfield
                 
 
             # Update cell death
@@ -762,6 +785,7 @@ def compute_enthalpy_nl(mesh, interior, boundaries, problemname, dt, tmax, dt_mi
             print "***************************** ACCEPT TIME **********************************"
 
     N.savetxt("%s/impedance.out" % problemname, (store_resistance, store_power), delimiter=',')   # output impedance
+
     return project_axisym(T+Constant(310.),W)
 
 # cell_death_func
@@ -883,7 +907,7 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
     #set_log_level(DEBUG)
 
     # define a restriction for V calculation
-    restriction = Restriction(interior,emp.restrict_mesh) # restrict thermal calc to tissue only
+    restriction = Restriction(interior,emp.restrict_mesh) # restrict em calc
     W = FunctionSpace(restriction, 'CG', order)
     W_dg0 = FunctionSpace(restriction, 'DG', 0) # attempt to stabilise sigma
     W_dg = FunctionSpace(restriction, 'DG', order) # capture SAR shape and discontinuity
@@ -942,6 +966,7 @@ def RFA_SAR(problemname, mesh, interior, boundaries, emp, T, thp):
     # SAR = project_axisym(sigma*inner(nabla_grad(V), nabla_grad(V))*r,W_dg)
 
     # plot(V)
+    # plot(SAR)
     # interactive()
 
     # compute impedance for control system as purely electrical

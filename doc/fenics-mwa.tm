@@ -145,77 +145,93 @@
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-34>>
 
-    <with|par-left|1.5fn|4.2<space|2spc>Cell death test
+    <with|par-left|1.5fn|4.2<space|2spc>Empirical SAR
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-35>>
 
-    <with|par-left|1.5fn|4.3<space|2spc>Concentric cylinder test
+    <with|par-left|1.5fn|4.3<space|2spc>Simple Coaxial Antenna
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-36>>
 
-    <with|par-left|1.5fn|4.4<space|2spc>Method of Manufactured solutions
-    steady-state Pennes equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1.5fn|4.4<space|2spc>Cell death test
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-37>>
 
-    <with|par-left|1.5fn|4.5<space|2spc>Method of Manufactured solutions
-    transient nonlinear Pennes equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1.5fn|4.5<space|2spc>Coaxial cable
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-38>>
 
-    <with|par-left|1.5fn|4.6<space|2spc>Transient Laser Heating Benchmark
+    <with|par-left|1.5fn|4.6<space|2spc>Concentric cylinder test
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-39>>
 
-    <with|par-left|1.5fn|4.7<space|2spc>Single Tine RFA
+    <with|par-left|1.5fn|4.7<space|2spc>Concentric cylinder analytic solution
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-40>>
 
-    <with|par-left|1.5fn|4.8<space|2spc>Annular Slot Antenna
-    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1.5fn|4.8<space|2spc>Method of Manufactured solutions
+    steady-state Pennes equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-41>>
 
-    <with|par-left|1.5fn|4.9<space|2spc>Temperature Dependent Electrical
-    Properties (MWA) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <with|par-left|1.5fn|4.9<space|2spc>Method of Manufactured solutions
+    transient nonlinear Pennes equation <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-42>>
 
-    <with|par-left|1.5fn|4.10<space|2spc>AMICA Prototype 2003
+    <with|par-left|1.5fn|4.10<space|2spc>Transient Laser Heating Benchmark
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-43>>
 
-    <with|par-left|1.5fn|4.11<space|2spc>AMICA Prototype 2003 Comparison
+    <with|par-left|1.5fn|4.11<space|2spc>Single Tine RFA
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-44>>
 
-    <with|par-left|1.5fn|4.12<space|2spc>AMICA Prototype 2011
+    <with|par-left|1.5fn|4.12<space|2spc>Single Tine RFA convergence tests
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-45>>
 
-    <with|par-left|1.5fn|4.13<space|2spc>Future Test Cases
+    <with|par-left|1.5fn|4.13<space|2spc>Annular Slot Antenna
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-46>>
 
-    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Implementation
-    Notes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-47><vspace|0.5fn>
+    <with|par-left|1.5fn|4.14<space|2spc>Temperature Dependent Electrical
+    Properties (MWA) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-47>>
 
-    <with|par-left|1.5fn|5.1<space|2spc>Parameter Dependencies
+    <with|par-left|1.5fn|4.15<space|2spc>AMICA Prototype 2003
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-48>>
 
-    <with|par-left|1.5fn|5.2<space|2spc>Nedelec Elements in MWA
+    <with|par-left|1.5fn|4.16<space|2spc>AMICA Prototype 2003 Comparison
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-49>>
 
-    <with|par-left|1.5fn|5.3<space|2spc>Strang Splitting
+    <with|par-left|1.5fn|4.17<space|2spc>AMICA Prototype 2011
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
     <no-break><pageref|auto-50>>
 
+    <vspace*|1fn><with|font-series|bold|math-font-series|bold|5<space|2spc>Implementation
+    Notes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-51><vspace|0.5fn>
+
+    <with|par-left|1.5fn|5.1<space|2spc>Parameter Dependencies
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-52>>
+
+    <with|par-left|1.5fn|5.2<space|2spc>Nedelec Elements in MWA
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-53>>
+
+    <with|par-left|1.5fn|5.3<space|2spc>Strang Splitting
+    <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+    <no-break><pageref|auto-54>>
+
     <with|par-left|1.5fn|5.4<space|2spc>git Repository Details
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-51>>
+    <no-break><pageref|auto-55>>
 
     <vspace*|1fn><with|font-series|bold|math-font-series|bold|Bibliography>
     <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-    <no-break><pageref|auto-52><vspace|0.5fn>
+    <no-break><pageref|auto-56><vspace|0.5fn>
   </table-of-contents>
 
   <new-page>
@@ -249,7 +265,7 @@
 
   This code relies on the programs git, FEniCS, Python, GMSH and MatLab being
   installed and configured in advance. This is most easily achieved on a
-  system running Ubuntu 10.04 LTS, which is the code development platform.
+  system running Ubuntu 12.04 LTS, which is the code development platform.
   The code is contained in a git repository (distributed version control
   http://git-scm.com/) and the latest release can be obtained by cloning the
   repository to a local machine using the command line:
@@ -271,8 +287,8 @@
   for the test cases and converts them to the FEniCS file format using
   dolfin-convert.
 
-  In order to run the test cases provided, the following command should be
-  issued on the command line from the installation directory:
+  In order to individually run the test cases provided, the following command
+  should be issued on the command line from the installation directory:
 
   <\pseudo-code>
     python ``filename''.py
@@ -289,7 +305,8 @@
   subdomains for the solver GMSH can be used to tag certain parts of the
   domain with integers. This is done by defining physical surfaces and lines
   before generating the mesh. Parameters can then be set in the input file to
-  inform the solver.
+  inform the solver where to apply boundary conditions and set material
+  properties.
 
   <section|Code Structure>
 
@@ -1050,19 +1067,84 @@
   Tu\<gtr\>T\<gtr\>Tl) \ should coincide with the analytic solution at all
   times.
 
+  <subsection|Empirical SAR>
+
+  File: ai-2012.py
+
+  \;
+
+  <no-indent>Status: working
+
+  \;
+
+  <no-indent>Description: The experiments performed by Haiming Ai et al.
+  <cite|Ai2012> are partially implemented to provide a comparison against
+  experimental results.
+
+  \;
+
+  <no-indent>Expected Results: Reproduces the results in the publication.
+
+  <subsection|Simple Coaxial Antenna>
+
+  File: annular-slot-antenna.py
+
+  \;
+
+  <no-indent>Status: working
+
+  \;
+
+  <no-indent>Description: This is a comparison against a different method of
+  computation. A coaxial cable is cut perpendicular to the direction of wave
+  propagation and the end brought into contact with a lossy biological tissue
+  <cite|Nevels1985>.\ 
+
+  \;
+
+  <no-indent>Expected Results: Reproduces the results in the publication.
+
   <subsection|Cell death test>
 
   File: cell-death-test.py
 
-  Status: working
+  \;
 
-  Description: this test case runs a transient calculation with a fixed
-  homogeneous temperature. This is to allow comparison of the implemented
-  cell death ODE solver with a standard adaptive ODE solver.
+  <no-indent>Status: working
 
-  Expected Result: V should agree with the solutions generated by
+  \;
+
+  <no-indent>Description: this test case runs a transient calculation with a
+  fixed homogeneous temperature. This is to allow comparison of the
+  implemented cell death ODE solver with a standard adaptive ODE solver.
+
+  \;
+
+  <no-indent>Expected Result: V should agree with the solutions generated by
   cell_death_test.m in the matlab directory. The matlab results are stored in
   matlab.pvd for easy comparison in paraview.
+
+  <subsection|Coaxial cable>
+
+  File: coaxial-test.py
+
+  \;
+
+  <no-indent>Status: working
+
+  \;
+
+  <no-indent>Description: this test case computes the <math|E> and <math|H>
+  field in a piece of coaxial cable for which analytic solutions are
+  available.
+
+  \;
+
+  <no-indent>Expected Result: should broadly agree with the analytic
+  solutions. The agreement is not the best because the absorbing boundary
+  condition is not accurate enought for this application. A much more
+  accurate boundary condition is commented out in the code, but of no use for
+  modelling realistic MITA cases.
 
   <subsection|Concentric cylinder test>
 
@@ -1084,6 +1166,23 @@
   <no-indent>Expected Result: The L2 norm error should be low and the second
   plot should be close to zero in the middle of the domain (not throughout
   due to boundary conditions at cylinder ends).
+
+  <subsection|Concentric cylinder analytic solution>
+
+  File: conc-cyl-analy-sol.py
+
+  \;
+
+  <no-indent>Status: working
+
+  \;
+
+  <no-indent>Description: implementation of the analytic solution in FEniCS.
+
+  \;
+
+  <no-indent>Expected Result: produces the analytic solution on computational
+  mesh.
 
   <subsection|Method of Manufactured solutions steady-state Pennes equation>
 
@@ -1269,14 +1368,6 @@
 
   <no-indent>Expected Results: Should agree with results in paper.
 
-  <subsection|Future Test Cases>
-
-  <\enumerate-numeric>
-    <item>RD Nevels
-
-    <item>MMS nonlinear system
-  </enumerate-numeric>
-
   <section|Implementation Notes>
 
   Various implementation issues inevitably arise when developing a code of
@@ -1376,14 +1467,32 @@
   <no-indent>then trunk is merged with release. This branch can then be
   pushed to github and lacks the unneeded develop history.
 
+  When updating for release 1.1 and 2.0 the commit history was removed using:
+
+  <\pseudo-code>
+    git merge --squash
+  </pseudo-code>
+
+  <no-indent>After release 2.0 develop will be copied to develop-old and
+  develop will become a fork of trunk.
+
   <\bibliography|bib|tm-plain|fenics-mwa>
-    <\bib-list|7>
-      <bibitem*|1><label|bib-Gas2012>Piotr<nbsp>Gas.<newblock> Temperature
+    <\bib-list|8>
+      <bibitem*|1><label|bib-Ai2012>Haiming<nbsp>Ai, Shuicai<nbsp>Wu,
+      Hongjian<nbsp>Gao, Lei<nbsp>Zhao, Chunlan<nbsp>Yang<localize| and
+      >Yi<nbsp>Zeng.<newblock> Temperature distribution analysis of tissue
+      water vaporization during microwave ablation: experiments and
+      simulations.<newblock> <with|font-shape|italic|International journal of
+      hyperthermia : the official journal of European Society for
+      Hyperthermic Oncology, North American Hyperthermia Group>,
+      28(7):674--85, jan 2012.<newblock>
+
+      <bibitem*|2><label|bib-Gas2012>Piotr<nbsp>Gas.<newblock> Temperature
       Distribution of Human Tissue in Interstitial Microwave
       Hyperthermia.<newblock> <with|font-shape|italic|PRZEGLĄD
       ELEKTROTECHNICZNY>, 88(7a):144--146, 2012.<newblock>
 
-      <bibitem*|2><label|bib-Haemmerich2003a>Dieter<nbsp>Haemmerich,
+      <bibitem*|3><label|bib-Haemmerich2003a>Dieter<nbsp>Haemmerich,
       Louay<nbsp>Chachati, Andrew S<nbsp>Wright, David M<nbsp>Mahvi, Fred
       T<nbsp>Lee<localize| and >John G<nbsp>Webster.<newblock> Hepatic
       radiofrequency ablation with internally cooled probes: effect of
@@ -1391,22 +1500,22 @@
       <with|font-shape|italic|IEEE transactions on bio-medical engineering>,
       50(4):493--500, apr 2003.<newblock>
 
-      <bibitem*|3><label|bib-Jin2009>Jian-Ming<nbsp>Jin<localize| and
+      <bibitem*|4><label|bib-Jin2009>Jian-Ming<nbsp>Jin<localize| and
       >Douglas J.<nbsp>Riley.<newblock> <with|font-shape|italic|Finite
       Element Analysis of Antennas and Arrays>.<newblock> John Wiley & Sons,
       2009.<newblock>
 
-      <bibitem*|4><label|bib-Marais2011>Neilen<nbsp>Marais.<newblock>
+      <bibitem*|5><label|bib-Marais2011>Neilen<nbsp>Marais.<newblock>
       Electrical Dipole and First Order Absorbing Boundary Condition (ABC)
       with Dolfin.<newblock> 2011.<newblock>
 
-      <bibitem*|5><label|bib-Nevels1985>R.D.<nbsp>Nevels,
+      <bibitem*|6><label|bib-Nevels1985>R.D.<nbsp>Nevels,
       C.M.<nbsp>Butler<localize| and >W.<nbsp>Yablon.<newblock> The Annular
       Slot Antenna in a Lossy Biological Medium (Short Papers).<newblock>
       <with|font-shape|italic|IEEE Transactions on Microwave Theory and
       Techniques>, 33(4):314--319, apr 1985.<newblock>
 
-      <bibitem*|6><label|bib-Trujillo2013>Macarena<nbsp>Trujillo<localize|
+      <bibitem*|7><label|bib-Trujillo2013>Macarena<nbsp>Trujillo<localize|
       and >Enrique<nbsp>Berjano.<newblock> Review of the mathematical
       functions used to model the temperature dependence of electrical and
       thermal conductivities of biological tissue in radiofrequency
@@ -1415,7 +1524,7 @@
       Hyperthermic Oncology, North American Hyperthermia Group>, , jul
       2013.<newblock>
 
-      <bibitem*|7><label|bib-Vyas1992>Reeta<nbsp>Vyas.<newblock> Green’s
+      <bibitem*|8><label|bib-Vyas1992>Reeta<nbsp>Vyas.<newblock> Green’s
       function solution to the tissue bioheat equation.<newblock>
       <with|font-shape|italic|Medical Physics>, 19(5):1319, sep
       1992.<newblock>
@@ -1432,82 +1541,87 @@
 
 <\references>
   <\collection>
-    <associate|auto-1|<tuple|1|3>>
-    <associate|auto-10|<tuple|2|5>>
-    <associate|auto-11|<tuple|3.2|5>>
-    <associate|auto-12|<tuple|3.2.1|6>>
-    <associate|auto-13|<tuple|3.2.2|6>>
-    <associate|auto-14|<tuple|3.2.2.1|6>>
-    <associate|auto-15|<tuple|3.2.3|6>>
-    <associate|auto-16|<tuple|3.3|7>>
-    <associate|auto-17|<tuple|3.3.1|7>>
-    <associate|auto-18|<tuple|3.3.2|7>>
-    <associate|auto-19|<tuple|3.3.3|8>>
-    <associate|auto-2|<tuple|1.1|3>>
-    <associate|auto-20|<tuple|3.3.4|8>>
-    <associate|auto-21|<tuple|3.3.5|8>>
-    <associate|auto-22|<tuple|3.3.6|9>>
-    <associate|auto-23|<tuple|3.3.7|9>>
-    <associate|auto-24|<tuple|3.3.8|10>>
-    <associate|auto-25|<tuple|3.3.8.1|10>>
-    <associate|auto-26|<tuple|3.3.8.2|11>>
-    <associate|auto-27|<tuple|3.3.8.3|11>>
-    <associate|auto-28|<tuple|3.3.9|11>>
-    <associate|auto-29|<tuple|3.3.10|12>>
-    <associate|auto-3|<tuple|2|3>>
-    <associate|auto-30|<tuple|3.3.11|12>>
-    <associate|auto-31|<tuple|3|12>>
-    <associate|auto-32|<tuple|3.4|12>>
-    <associate|auto-33|<tuple|4|12>>
-    <associate|auto-34|<tuple|4.1|12>>
-    <associate|auto-35|<tuple|4.2|13>>
-    <associate|auto-36|<tuple|4.3|13>>
-    <associate|auto-37|<tuple|4.4|13>>
-    <associate|auto-38|<tuple|4.5|13>>
-    <associate|auto-39|<tuple|4.6|14>>
-    <associate|auto-4|<tuple|1|4>>
-    <associate|auto-40|<tuple|4.7|14>>
-    <associate|auto-41|<tuple|4.8|14>>
-    <associate|auto-42|<tuple|4.9|14>>
-    <associate|auto-43|<tuple|4.10|14>>
-    <associate|auto-44|<tuple|4.11|15>>
-    <associate|auto-45|<tuple|4.12|15>>
-    <associate|auto-46|<tuple|4.13|15>>
-    <associate|auto-47|<tuple|4.14|15>>
-    <associate|auto-48|<tuple|5|15>>
-    <associate|auto-49|<tuple|5.1|15>>
-    <associate|auto-5|<tuple|3|4>>
-    <associate|auto-50|<tuple|5.2|16>>
-    <associate|auto-51|<tuple|5.3|16>>
-    <associate|auto-52|<tuple|5.4|16>>
-    <associate|auto-53|<tuple|5.4|17>>
-    <associate|auto-6|<tuple|3.1|4>>
-    <associate|auto-7|<tuple|1|5>>
-    <associate|auto-8|<tuple|3.1.1|5>>
-    <associate|auto-9|<tuple|3.1.2|5>>
-    <associate|bib-Gas2012|<tuple|1|16>>
-    <associate|bib-Haemmerich2003a|<tuple|2|16>>
-    <associate|bib-Jin2009|<tuple|3|16>>
-    <associate|bib-Marais2011|<tuple|4|16>>
-    <associate|bib-Nevels1985|<tuple|5|16>>
-    <associate|bib-Trujillo2013|<tuple|6|16>>
-    <associate|bib-Vyas1992|<tuple|7|16>>
-    <associate|eqn-curlH|<tuple|2|7>>
-    <associate|eqn-curlcurlH|<tuple|3|7>>
-    <associate|eqn-scalar-form|<tuple|4|7>>
+    <associate|auto-1|<tuple|1|4>>
+    <associate|auto-10|<tuple|2|6>>
+    <associate|auto-11|<tuple|3.2|7>>
+    <associate|auto-12|<tuple|3.2.1|7>>
+    <associate|auto-13|<tuple|3.2.2|7>>
+    <associate|auto-14|<tuple|3.2.2.1|7>>
+    <associate|auto-15|<tuple|3.2.3|7>>
+    <associate|auto-16|<tuple|3.3|8>>
+    <associate|auto-17|<tuple|3.3.1|8>>
+    <associate|auto-18|<tuple|3.3.2|9>>
+    <associate|auto-19|<tuple|3.3.3|9>>
+    <associate|auto-2|<tuple|1.1|4>>
+    <associate|auto-20|<tuple|3.3.4|9>>
+    <associate|auto-21|<tuple|3.3.5|9>>
+    <associate|auto-22|<tuple|3.3.6|10>>
+    <associate|auto-23|<tuple|3.3.7|10>>
+    <associate|auto-24|<tuple|3.3.8|11>>
+    <associate|auto-25|<tuple|3.3.8.1|11>>
+    <associate|auto-26|<tuple|3.3.8.2|12>>
+    <associate|auto-27|<tuple|3.3.8.3|12>>
+    <associate|auto-28|<tuple|3.3.9|12>>
+    <associate|auto-29|<tuple|3.3.10|13>>
+    <associate|auto-3|<tuple|2|5>>
+    <associate|auto-30|<tuple|3.3.11|13>>
+    <associate|auto-31|<tuple|3|13>>
+    <associate|auto-32|<tuple|3.4|13>>
+    <associate|auto-33|<tuple|4|13>>
+    <associate|auto-34|<tuple|4.1|14>>
+    <associate|auto-35|<tuple|4.2|14>>
+    <associate|auto-36|<tuple|4.3|14>>
+    <associate|auto-37|<tuple|4.4|14>>
+    <associate|auto-38|<tuple|4.5|14>>
+    <associate|auto-39|<tuple|4.6|15>>
+    <associate|auto-4|<tuple|1|5>>
+    <associate|auto-40|<tuple|4.7|15>>
+    <associate|auto-41|<tuple|4.8|15>>
+    <associate|auto-42|<tuple|4.9|15>>
+    <associate|auto-43|<tuple|4.10|15>>
+    <associate|auto-44|<tuple|4.11|16>>
+    <associate|auto-45|<tuple|4.12|16>>
+    <associate|auto-46|<tuple|4.13|16>>
+    <associate|auto-47|<tuple|4.14|16>>
+    <associate|auto-48|<tuple|4.15|17>>
+    <associate|auto-49|<tuple|4.16|17>>
+    <associate|auto-5|<tuple|3|5>>
+    <associate|auto-50|<tuple|4.17|17>>
+    <associate|auto-51|<tuple|5|17>>
+    <associate|auto-52|<tuple|5.1|17>>
+    <associate|auto-53|<tuple|5.2|17>>
+    <associate|auto-54|<tuple|5.3|18>>
+    <associate|auto-55|<tuple|5.4|18>>
+    <associate|auto-56|<tuple|5.4|18>>
+    <associate|auto-57|<tuple|5.4|?>>
+    <associate|auto-6|<tuple|3.1|5>>
+    <associate|auto-7|<tuple|1|6>>
+    <associate|auto-8|<tuple|3.1.1|6>>
+    <associate|auto-9|<tuple|3.1.2|6>>
+    <associate|bib-Ai2012|<tuple|1|18>>
+    <associate|bib-Gas2012|<tuple|2|18>>
+    <associate|bib-Haemmerich2003a|<tuple|3|19>>
+    <associate|bib-Jin2009|<tuple|4|19>>
+    <associate|bib-Marais2011|<tuple|5|19>>
+    <associate|bib-Nevels1985|<tuple|6|19>>
+    <associate|bib-Trujillo2013|<tuple|7|19>>
+    <associate|bib-Vyas1992|<tuple|8|19>>
+    <associate|eqn-curlH|<tuple|2|8>>
+    <associate|eqn-curlcurlH|<tuple|3|8>>
+    <associate|eqn-scalar-form|<tuple|4|8>>
     <associate|eqn-vecvar|<tuple|6|7>>
     <associate|eqn-weak|<tuple|5|7>>
-    <associate|fig:code-schem|<tuple|1|4>>
+    <associate|fig:code-schem|<tuple|1|5>>
     <associate|overall|<tuple|3.3.11|11>>
     <associate|ref-dispersive-material|<tuple|4|16>>
     <associate|ref-magvar|<tuple|3|16>>
     <associate|ref-nummeth|<tuple|5|16>>
     <associate|ref-stellenbosch|<tuple|2|16>>
     <associate|ref-tempdist|<tuple|1|16>>
-    <associate|sec:test_case|<tuple|4|12>>
-    <associate|strong-form|<tuple|1|7>>
-    <associate|tab:mwa|<tuple|3|12>>
-    <associate|tav:pennes|<tuple|1|5>>
+    <associate|sec:test_case|<tuple|4|13>>
+    <associate|strong-form|<tuple|1|8>>
+    <associate|tab:mwa|<tuple|3|13>>
+    <associate|tav:pennes|<tuple|1|6>>
   </collection>
 </references>
 
@@ -1539,6 +1653,10 @@
       Nevels1985
 
       Gas2012
+
+      Ai2012
+
+      Nevels1985
 
       Vyas1992
     </associate>
@@ -1679,79 +1797,95 @@
       heat sink <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-34>>
 
-      <with|par-left|<quote|1.5fn>|4.2<space|2spc>Cell death test
+      <with|par-left|<quote|1.5fn>|4.2<space|2spc>Empirical SAR
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-35>>
 
-      <with|par-left|<quote|1.5fn>|4.3<space|2spc>Concentric cylinder test
+      <with|par-left|<quote|1.5fn>|4.3<space|2spc>Simple Coaxial Antenna
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-36>>
 
-      <with|par-left|<quote|1.5fn>|4.4<space|2spc>Method of Manufactured
-      solutions steady-state Pennes equation
+      <with|par-left|<quote|1.5fn>|4.4<space|2spc>Cell death test
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-37>>
 
-      <with|par-left|<quote|1.5fn>|4.5<space|2spc>Method of Manufactured
-      solutions transient nonlinear Pennes equation
+      <with|par-left|<quote|1.5fn>|4.5<space|2spc>Coaxial cable
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-38>>
 
-      <with|par-left|<quote|1.5fn>|4.6<space|2spc>Transient Laser Heating
-      Benchmark <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.6<space|2spc>Concentric cylinder test
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-39>>
 
-      <with|par-left|<quote|1.5fn>|4.7<space|2spc>Single Tine RFA
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.7<space|2spc>Concentric cylinder
+      analytic solution <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-40>>
 
-      <with|par-left|<quote|1.5fn>|4.8<space|2spc>Annular Slot Antenna
+      <with|par-left|<quote|1.5fn>|4.8<space|2spc>Method of Manufactured
+      solutions steady-state Pennes equation
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-41>>
 
-      <with|par-left|<quote|1.5fn>|4.9<space|2spc>Temperature Dependent
-      Electrical Properties (MWA) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.9<space|2spc>Method of Manufactured
+      solutions transient nonlinear Pennes equation
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-42>>
 
-      <with|par-left|<quote|1.5fn>|4.10<space|2spc>AMICA Prototype 2003
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.10<space|2spc>Transient Laser Heating
+      Benchmark <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-43>>
 
-      <with|par-left|<quote|1.5fn>|4.11<space|2spc>AMICA Prototype 2003
-      Comparison <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.11<space|2spc>Single Tine RFA
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-44>>
 
-      <with|par-left|<quote|1.5fn>|4.12<space|2spc>AMICA Prototype 2011
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.12<space|2spc>Single Tine RFA
+      convergence tests <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-45>>
 
-      <with|par-left|<quote|1.5fn>|4.13<space|2spc>Future Test Cases
+      <with|par-left|<quote|1.5fn>|4.13<space|2spc>Annular Slot Antenna
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-46>>
 
-      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Implementation
-      Notes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-47><vspace|0.5fn>
+      <with|par-left|<quote|1.5fn>|4.14<space|2spc>Temperature Dependent
+      Electrical Properties (MWA) <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-47>>
 
-      <with|par-left|<quote|1.5fn>|5.1<space|2spc>Parameter Dependencies
+      <with|par-left|<quote|1.5fn>|4.15<space|2spc>AMICA Prototype 2003
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-48>>
 
-      <with|par-left|<quote|1.5fn>|5.2<space|2spc>Nedelec Elements in MWA
-      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <with|par-left|<quote|1.5fn>|4.16<space|2spc>AMICA Prototype 2003
+      Comparison <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-49>>
 
-      <with|par-left|<quote|1.5fn>|5.3<space|2spc>Strang Splitting
+      <with|par-left|<quote|1.5fn>|4.17<space|2spc>AMICA Prototype 2011
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
       <no-break><pageref|auto-50>>
 
+      <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|5<space|2spc>Implementation
+      Notes> <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-51><vspace|0.5fn>
+
+      <with|par-left|<quote|1.5fn>|5.1<space|2spc>Parameter Dependencies
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-52>>
+
+      <with|par-left|<quote|1.5fn>|5.2<space|2spc>Nedelec Elements in MWA
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-53>>
+
+      <with|par-left|<quote|1.5fn>|5.3<space|2spc>Strang Splitting
+      <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
+      <no-break><pageref|auto-54>>
+
       <with|par-left|<quote|1.5fn>|5.4<space|2spc>git Repository Details
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-51>>
+      <no-break><pageref|auto-55>>
 
       <vspace*|1fn><with|font-series|<quote|bold>|math-font-series|<quote|bold>|Bibliography>
       <datoms|<macro|x|<repeat|<arg|x>|<with|font-series|medium|<with|font-size|1|<space|0.2fn>.<space|0.2fn>>>>>|<htab|5mm>>
-      <no-break><pageref|auto-52><vspace|0.5fn>
+      <no-break><pageref|auto-56><vspace|0.5fn>
     </associate>
   </collection>
 </auxiliary>
